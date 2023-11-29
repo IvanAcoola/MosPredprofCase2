@@ -1,0 +1,94 @@
+{% include "main/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="{% static 'main/main.css' %}">
+
+
+<div class="container">
+  <article class="media content-section">
+    <img class="rounded-circle account-img" src="{{ user.profile.image.url }}" width="150px">
+    <div class="media-body">
+      <h2 class="pro">{{ user.username }}</h2>
+      <p class="text-secondary">{{ user.email }}</p>
+    </div>
+  </article>
+                 
+<div class="row media">
+  <div class="col-4">
+    <div class="list-group" id="list-tab" role="tablist">
+      <a class="list-group-item list-group-item-action top_but" id="list-settings-list" data-toggle="list" href="#list-inf" role="tab" aria-controls="settings"><i class="fa fa-home"></i>Информация</a>
+      <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile"><i class="fa fa-cog"></i>Изменить данные</a>
+      <a class="list-group-item list-group-item-action bot_but" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings"><i class="fa fa-remove"></i>Удалить аккаунт</a>
+      <a class="list-group-item list-group-item-action bot_but" id="list-settings-list" data-toggle="list" href="#list-test" role="tab" aria-controls="settings"><i class="fa fa-remove"></i>Смена информации</a>
+    </div>
+  </div>
+  <div class="col-8">
+    <div class="tab-content" id="nav-tabContent">
+      <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="exampleFormControlInput1">Электронная почта</label>
+            <input class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" name="email">
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Пол</label>
+            <select class="form-control" id="exampleFormControlSelect1">
+              <option>Male</option>
+              <option>Female</option>
+            </select>
+          </div>
+          <label for="basic-url">Your vanity URL</label>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon3">https://gakta.ru/users/</span>
+            </div>
+            <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlTextarea1">О себе</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <button class="btn btn-primary btn-lg btn-block" type="submit">Сохранить</button>
+          </div>
+      </form>
+
+    </div>
+      <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Причина удаления:</span>
+          </div>
+          <textarea class="form-control" aria-label="With textarea"></textarea>
+          <button type="button" class="btn btn-primary btn-lg btn-block">Сохранить</button>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="list-inf" role="tabpanel" aria-labelledby="list-inf-list">
+        <label for="formGroupExampleInput">Имя пользователя</label>
+        <input class="form-control" type="text" placeholder="{{ user.username }}" readonly>
+        <label for="formGroupExampleInput">E-mail</label>
+        <input class="form-control" type="text" placeholder="{{ user.email }}" readonly>
+        <label for="formGroupExampleInput">Пароль</label>  
+        <input class="form-control" type="text" placeholder="****************" readonly>
+      </div>
+
+      <div class="tab-pane fade" id="list-test" role="tabpanel" aria-labelledby="list-inf-list">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Изменить информацию о профиле</legend>
+                {{ u_form }}
+                {% include 'users/change_profile_form.html' with form=form %}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Обновить</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

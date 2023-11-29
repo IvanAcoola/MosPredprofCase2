@@ -1,0 +1,27 @@
+{% extends "main/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'main/main.css' %}">
+    <h1 class="h1_home">GATKA - проверь сайт на гадкость</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="check_link">
+            <div class="form_group">
+                <input name="domain_form" class="link" type="text" placeholder=" ">
+                <label class="label_link">Введите URL - адрес</label>
+            </div>
+        </div>
+        <div class="button_block">
+            <button type="submit" class="checkbutton">ПРОВЕРИТЬ</button>
+            <button type="button"
+                    class="btn btn-secondary daun"
+                    data-container="body"
+                    data-toggle="popover"
+                    data-placement="bottom"
+                    data-content="Помощь?">
+                Попросить помощь
+            </button>
+        </div>
+    </form>
+    {% endblock content %}

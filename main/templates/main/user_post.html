@@ -1,0 +1,56 @@
+{% extends "main/base.html" %}
+{% block content %}
+        <h>Записи от {{ view.kwargs.username }} ({{ page_obj.paginator.count }})</h1>
+        {% for post in posts %}
+        <article class="media content-section">
+            <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}">
+            <div class="media-body">
+              <div class="article-metadata">
+                <a class="mr-2" href="{% url 'main-user-posts' post.author.username %}">{{ post.author }}</a>
+                <small class="text-muted">{{ post.date_posted|date:"N j, Y, H:i" }}</small>
+              </div>
+              <h2><a class="article-title" href="{% url 'main-blog-detail' post.id %}">{{ post.title }}</a></h2>
+              <p class="article-content">{{ post.content }}</p>
+            </div>
+          </article>
+          {% endfor %}
+
+          {% if is_paginated %}
+          <nav>
+            <ul class="pagination justify-content-center">
+              {% if page_obj.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1">Назад</a>
+                </li>
+                {% if page_obj.number > 2 %}
+                  <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+                  <li class="page-item"><a class="page-link">...</a></li>
+                {% endif %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{page_obj.previous_page_number}}</a></li>
+              {% endif %}
+
+              {% for i in page_obj.paginator.page_range %}
+                {% if page_obj.number == i %}
+                  <li class="page-item active"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% elif i > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                  <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %} 
+              {% endfor %}
+
+              {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+
+                {% if page_obj.number|add:'1' != page_obj.paginator.num_pages %}
+                  <li class="page-item"><a class="page-link">...</a></li>
+                  <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a></li>
+                {% endif %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ page_obj.next_page_number }}">Вперед</a>
+                </li>
+              {% endif %}
+              
+            </ul>
+          </nav>
+          {% endif %}
+
+{% endblock content %}
